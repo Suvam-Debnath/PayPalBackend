@@ -18,9 +18,24 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     public Transaction createTransaction(Transaction request) {
-        request.setTimestamp(LocalDateTime.now());
-        request.setStatus("SUCCESS");
-        return repository.save(request);
+        System.out.println("🚀 Entered createTransaction()");
+
+        Long senderId = request.getSenderId();
+        Long receiverId = request.getReceiverId();
+        Double amount = request.getAmount();
+
+        Transaction transaction = new Transaction();
+        transaction.setSenderId(senderId);
+        transaction.setReceiverId(receiverId);
+        transaction.setAmount(amount);
+        transaction.setTimestamp(LocalDateTime.now());
+        transaction.setStatus("SUCCESS");
+
+        System.out.println("📥 Incoming Transaction object: " + transaction);
+
+        Transaction saved = repository.save(transaction);
+        System.out.println("💾 Saved Transaction from DB: " + saved);
+        return saved;
     }
 
     @Override
